@@ -4,10 +4,10 @@
 
 
 <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />	
-<link type="text/css" href="card-board.css" rel="stylesheet" />	
 <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
 <script type="text/javascript" src="card-board.js"></script>
+<link type="text/css" href="card-board.css" rel="stylesheet" />	
 
 </head>
 
@@ -19,20 +19,20 @@
 	</div>
 
 <div id="dialog-form-card" title="Create a new card">
+	<p class="validateCardTips"></p>
 	<form>
-	<fieldset>
+	<fieldset style='height: 150px;'>
 		<label for="title">Title</label>
-		<input type="text" name="title" id="title" class="text ui-widget-content ui-corner-all" />
-		<label for="description">Description</label>
-		<textarea name="description" id="description" class="text ui-widget-content ui-corner-all"></textarea>
+		<input type="text" name="title" id="card-title" class="text ui-widget-content ui-corner-all" />
+		<textarea name="description" id="card-description" class="text ui-widget-content ui-corner-all"></textarea>
 	</fieldset>
 	</form>
 </div>
 
 <div id="dialog-form-note" title="Create a new note">
+	<p class="validateNoteTips"></p>
 	<form>
 	<fieldset>
-		<label for="note-description">Description</label>
 		<textarea name="note-description" id="note-description" class="text ui-widget-content ui-corner-all"></textarea>
 	</fieldset>
 	</form>
@@ -40,7 +40,6 @@
 
 <script>
 	$(function() {
-		var allFields = $( [] ).add( title ).add( description )
 
 		addCard( 1, 100, 100, "Repro Hub", "This is some blurb about Repro hub that will cut across multiple lines which is good.<br><br>List" );
 		addCard( 2, 200, 200, "New ONE", "Description" );

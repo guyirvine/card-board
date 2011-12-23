@@ -1,6 +1,7 @@
 body {
 	background-color: lightgray;
 	border: 1px solid black;
+	font-family: MV Boli; Comic Sans MS;
 }
 
 .shadow {
@@ -64,3 +65,9 @@ body {
 	position: absolute;
 }
 
+textarea, .uiwidget, textarea.uiwidget {
+	font-size: 11px;
+	width: 100%;
+	height: 110px;
+	font-family: MV Boli; Comic Sans MS;
+}
