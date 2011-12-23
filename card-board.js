@@ -37,6 +37,76 @@ function checkRegexp( tipControl, o, regexp, n ) {
 	}
 }
 
+/*********************************************************************************************/
+/* Split */
+var nextSplitId = 0;
+var currentSplitId = null;
+
+function createSplitDialog() {
+	$( "#dialog-form-split" ).dialog({
+			autoOpen: false,
+			height: 300,
+			width: 350,
+			modal: true,
+			buttons: {
+				"Create a split": function() {
+					var bValid = true;
+					var splitUpper = $("#split-upper");
+					var splitLower = $("#split-lower");
+					var allFields = $( [] ).add( splitUpper ).add( splitLower )
+					allFields.removeClass( "ui-state-error" );
+
+					if ( bValid ) {
+						if ( currentSplitId == null ) {
+							addSplit( 4, 250, splitUpper.val(), splitLower.val() );
+						} else {
+							$("#split-" + currentSplitId + "-upper").text($( "#split-upper" ).val() );
+							$("#split-" + currentSplitId + "-lower").text($( "#split-lower" ).val( ) );	
+						}
+							
+						$( this ).dialog( "close" );
+					}
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+			},
+			close: function() {
+				var splitUpper = $("#split-upper");
+				var splitLower= $("#split-lower");
+				var allFields = $( [] ).add( splitUpper ).add( splitLower )
+				allFields.val( "" ).removeClass( "ui-state-error" );
+			}
+		});
+}	
+
+
+function addSplit( id, top, upper, lower ) {
+	var splitId = nextSplitId++;
+	string = "" +
+			"<div id='split-" + splitId + "' class='split' style='top: " + top + "px;'>" +
+				"<div class='upper'id='split-" + splitId + "-upper'>" + upper + "</div>" +
+				"<div class='lower'id='split-" + splitId + "-lower'>" + lower + "</div>" +
+			"</div>";
+	
+	$( '#split-layout' ).append( string );
+	$( "#split-" + splitId ).draggable( { axis: 'y' });
+	$( "#split-" + splitId ).mouseover( function() {
+		$( id ).addClass( "highlight" ) })
+		.mouseout( function() {
+		$( id ).removeClass( "highlight" ) })
+	;
+
+	$( "#split-" + splitId )
+				.click(function() {
+					currentSplitId = splitId;
+					$( "#split-upper" ).val( $("#split-" + splitId + "-upper").text() );	
+					$( "#split-lower" ).val( $("#split-" + splitId + "-lower").text() );	
+					$( "#ui-dialog-title-dialog-form-split" ).text( "Update split" );
+					$( "#dialog-form-split" ).dialog( "open" );
+				});
+}
+/*********************************************************************************************/
 
 /*********************************************************************************************/
 /* Card */
@@ -176,6 +246,7 @@ function addNote( id, top, left, description ) {
 function createDialogs() {
 	createCardDialog();
 	createNoteDialog();
+	createSplitDialog();
 
 	$( "#create-card" )
 				.button()
@@ -189,6 +260,13 @@ function createDialogs() {
 					currentNoteId = null;
 					$( "#ui-dialog-title-dialog-form-note" ).text( "Create a Note" );
 					$( "#dialog-form-note" ).dialog( "open" );
+				});
+	$( "#create-split" )
+				.button()
+				.click(function() {
+					currentSplitId = null;
+					$( "#ui-dialog-title-dialog-form-split" ).text( "Create a Split" );
+					$( "#dialog-form-split" ).dialog( "open" );
 				});
 	}
 	

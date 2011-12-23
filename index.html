@@ -14,9 +14,22 @@
 
 <body>
 	<div id='card-layout'>
-	<button id="create-card">Create new card</button>
-	<button id="create-note">Create new note</button>
+		<button id="create-split">Create new split</button>
+		<button id="create-card">Create new card</button>
+		<button id="create-note">Create new note</button>
 	</div>
+
+<div id="dialog-form-split" title="Create a new split">
+	<p class="validateSplitTips"></p>
+	<form>
+	<fieldset style='height: 150px;'>
+		<label for="title">Upper</label>
+		<input type="text" name="upper" id="split-upper" class="text ui-widget-content ui-corner-all" />
+		<label for="title">Lower</label>
+		<input type="text" name="lower" id="split-lower" class="text ui-widget-content ui-corner-all" />
+	</fieldset>
+	</form>
+</div>
 
 <div id="dialog-form-card" title="Create a new card">
 	<p class="validateCardTips"></p>
@@ -38,12 +51,16 @@
 	</form>
 </div>
 
+<div id='split-layout'>
+</div>
+
 <script>
 	$(function() {
 
 		addCard( 1, 100, 100, "Repro Hub", "This is some blurb about Repro hub that will cut across multiple lines which is good.<br><br>List" );
 		addCard( 2, 200, 200, "New ONE", "Description" );
 		addNote( 1, 50, 50, "This is a note which is also quite handy dandy" );
+		addSplit( 1, 300, "Existing", "New" );
 
 		createDialogs();
 	});

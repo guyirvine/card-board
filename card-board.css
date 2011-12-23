@@ -67,6 +67,19 @@ body {
 	cursor: default;
 }
 
+#split-layout div {
+	position: relative;
+	width: 100%;
+}
+
+#split-layout div.split {
+	position: absolute;
+}
+
+#split-layout div.upper {
+	border-bottom: 3px solid black;
+}
+
 textarea, .uiwidget, textarea.uiwidget {
 	font-size: 11px;
 	width: 100%;
