@@ -25,6 +25,7 @@ body {
 	background-color: white;
 	font-family: MV Boli; Comic Sans MS;
 	font-size: 20px;
+	cursor: default;
 }
 
 #card-layout div.line {
@@ -63,6 +64,7 @@ body {
 	padding: 5px;
 	text-align: center;
 	position: absolute;
+	cursor: default;
 }
 
 textarea, .uiwidget, textarea.uiwidget {
