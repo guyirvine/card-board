@@ -3,100 +3,10 @@
 <head>
 
 
+<link type="text/css" href="card-board.css" rel="stylesheet" />	
 <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
-
-
-<style>
-<!--
-body {
-	background-color: lightgray;
-	border: 1px solid black;
-}
-
-#card-layout div.card {
-	border: 1px solid black;
-	height: 110px;
-	width: 200px;
-	position: absolute;
-	background-color: white;
-	font-family: MV Boli; Comic Sans MS;
-	font-size: 20px;
-}
-
-#card-layout div.line {
-	border-top: 1px solid #33a3a3;
-	top: 0px;
-	left: 0px;
-	height: 1px;
-	width: 200px;
-	position: absolute;
-}
-
-#card-layout div.title {
-	top: 0px;
-	left: 0px;
-	width: 200px;
-	position: absolute;
-	text-align: center;
-}
-#card-layout div.body {
-	top: 25px;
-	left: 0px;
-	width: 200px;
-	position: absolute;
-	text-align: left;
-	padding-left: 5px;
-	padding-right: 5px;
-	font-size: 11px;
-}
-
-#card-layout div.note {
-	border: 1px solid black;
-	background-color: ffff99;
-	width: 150px;
-	font-size: 15px;
-	font-family: MV Boli; Comic Sans MS;
-	padding: 5px;
-	text-align: center;
-}
--->
-</style>
-
-<script>
-	function addCard( id, top, left, title, description ) {
-		string = "";
-		string += "<div id='card-" + id + "' class='card' style='top: " + top + "px;left: " + left + "px;'>";
-		string += "<div class='line' style='top: 25px;'>&nbsp;</div>";
-		string += "<div class='line' style='top: 41px;'>&nbsp;</div>";
-		string += "<div class='line' style='top: 57px;'>&nbsp;</div>";
-		string += "<div class='line' style='top: 73px;'>&nbsp;</div>";
-		string += "<div class='line' style='top: 89px;'>&nbsp;</div>";
-		string += "<div class='line' style='top: 105px;'>&nbsp;</div>";
-		string += "<div class='title'>" + title + "</div>";
-		string += "<div class='body'>" + description + "</div>";
-		string += "</div>";
-		$( '#card-layout' ).append( string );
-		$( "#card-" + id ).draggable( { handle: '.title' } );
-	}
-
-	function addNote( id, top, left, description ) {
-		string = "";
-		string += "<div id='note-" + id + "' class='note' style='top: " + top + "px;left: " + left + "px;'>";
-		string += description;
-		string += "</div>";
-
-		$( '#card-layout' ).append( string );
-		$( "#note-" + id ).draggable();		
-	}
-
-	$(function() {
-		addCard( 1, 100, 100, "Repro Hub", "This is some blurb about Repro hub that will cut across multiple lines which is good.<br><br>List" );
-		addCard( 2, 200, 200, "New ONE", "Description" );
-		addNote( 1, 50, 50, "This is a note which is also quite handy dandy" );
-	});
-	
-</script>
+<script type="text/javascript" src="card-board.js"></script>
 
 </head>
 
@@ -105,6 +15,14 @@ body {
 	<div id='card-layout'>
 
 	</div>
+
+<script>
+	$(function() {
+		addCard( 1, 100, 100, "Repro Hub", "This is some blurb about Repro hub that will cut across multiple lines which is good.<br><br>List" );
+		addCard( 2, 200, 200, "New ONE", "Description" );
+		addNote( 1, 50, 50, "This is a note which is also quite handy dandy" );
+	});
+</script>
 </body>
 
 </html>
