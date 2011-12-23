@@ -3,6 +3,19 @@ body {
 	border: 1px solid black;
 }
 
+.shadow {
+  -moz-box-shadow:    3px 3px 3px 1px #999;
+  -webkit-box-shadow: 3px 3px 3px 1px #999;
+  box-shadow:         3px 3px 3px 1px #999;
+}
+
+
+#card-layout div.highlight {
+  -moz-box-shadow:    3px 3px 3px 1px #666;
+  -webkit-box-shadow: 3px 3px 3px 1px #666;
+  box-shadow:         3px 3px 3px 1px #666;
+}
+
 #card-layout div.card {
 	border: 1px solid black;
 	height: 110px;
@@ -48,4 +61,6 @@ body {
 	font-family: MV Boli; Comic Sans MS;
 	padding: 5px;
 	text-align: center;
+	position: absolute;
 }
+
