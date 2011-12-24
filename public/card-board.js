@@ -1,3 +1,22 @@
+function sendMsgToServer( verbType, msg ) {
+	$.ajax({
+			url: 'note/13',
+			contentType: 'application/json',
+			data: msg,
+			type: verbType,
+			success: function( data, status ) {
+				alert( data );
+			}
+		});
+	}
+
+function postMsgToServer( msg ) {
+	sendMsgToServer( "POST", msg );
+	}
+function putMsgToServer( msg ) {
+	sendMsgToServer( "PUT", msg );
+	}
+
 function addInteraction( id ) {
 	$( id ).draggable();
 	$( id ).mouseover( function() {
@@ -208,6 +227,7 @@ function createNoteDialog() {
 							addNote( 4, 250, 400, noteDescription.val() );
 						} else {
 							$("#note-" + currentNoteId).text( noteDescription.val() );
+							putMsgToServer( '{ "description": "' + noteDescription.val() + '" }' );
 						}
 						$( this ).dialog( "close" );
 					}
