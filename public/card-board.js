@@ -17,8 +17,27 @@ function putMsgToServer( msg ) {
 	sendMsgToServer( "PUT", msg );
 	}
 
+function updateCardToServer( id, top, left, title, description ) {
+	msg = '{ "top": "' + top + '", "left": "' + left + '", "title": "' + title + '", "description": "' + description + '"  }'
+
+	$.ajax({
+			url: 'card/' + id,
+			contentType: 'application/json',
+			data: msg,
+			type: "PUT",
+			success: function( data, status ) {
+				alert( data );
+			}
+		});
+
+	}
+
 function addInteraction( id ) {
-	$( id ).draggable();
+	$( id ).draggable({
+		stop: function( event, ui ) {
+			alert( ui.position.left );
+		}
+	});
 	$( id ).mouseover( function() {
 		$( id ).addClass( "highlight" ) })
 		.mouseout( function() {
@@ -188,7 +207,19 @@ function addCard( id, top, left, title, description ) {
 				"</div>";
 
 	$( '#card-layout' ).append( string );
-	addInteraction( "#card-" + cardId );
+	var cardId = "#card-" + cardId;
+	$( cardId ).draggable({
+		stop: function( event, ui ) {
+			alert( $(cardId + "-title").text() );
+			updateCardToServer( 16, ui.position.top, ui.position.left, $(cardId + "-title").text(), $(cardId + "-description").text() );
+		}
+	});
+	$( cardId ).mouseover( function() {
+		$( cardId ).addClass( "highlight" ) })
+		.mouseout( function() {
+		$( cardId ).removeClass( "highlight" ) })
+	;
+
 
 	$( "#card-" + cardId )
 				.click(function() {
