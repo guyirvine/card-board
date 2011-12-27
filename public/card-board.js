@@ -1,43 +1,6 @@
-function sendMsgToServer( verbType, msg ) {
-	$.ajax({
-			url: 'note/13',
-			contentType: 'application/json',
-			data: msg,
-			type: verbType,
-			success: function( data, status ) {
-				alert( data );
-			}
-		});
-	}
-
-function postMsgToServer( msg ) {
-	sendMsgToServer( "POST", msg );
-	}
-function putMsgToServer( msg ) {
-	sendMsgToServer( "PUT", msg );
-	}
-
-function updateCardToServer( id, top, left, title, description ) {
-	msg = '{ "top": "' + top + '", "left": "' + left + '", "title": "' + title + '", "description": "' + description + '"  }'
-
-	$.ajax({
-			url: 'card/' + id,
-			contentType: 'application/json',
-			data: msg,
-			type: "PUT",
-			success: function( data, status ) {
-				alert( data );
-			}
-		});
-
-	}
-
-function addInteraction( id ) {
-	$( id ).draggable({
-		stop: function( event, ui ) {
-			alert( ui.position.left );
-		}
-	});
+/*********************************************************************************************/
+/* UI Helpers */
+function addHighlight( id ) {
 	$( id ).mouseover( function() {
 		$( id ).addClass( "highlight" ) })
 		.mouseout( function() {
@@ -74,6 +37,59 @@ function checkRegexp( tipControl, o, regexp, n ) {
 		return true;
 	}
 }
+/*********************************************************************************************/
+
+/*********************************************************************************************/
+/* AJAX */
+var msgQueue = []
+var sending = false;
+
+function sendMsgToServer() {
+//	alert( 'sendMsgToServer' );
+	if ( sending == false ) {
+		if ( msgQueue.length > 0 ) {
+			sending = true;
+			obj = msgQueue.shift();
+			$.ajax({
+					url: obj.url,
+					contentType: obj.contentType,
+					data: obj.data,
+					type: obj.type,
+					success: function( data, status ) {
+						sending = false;
+						sendMsgToServer();
+					}
+				});
+			}
+	}
+}
+
+function queueMsgToServer( url, contentType, data, type ) {
+	var obj = { "url": url,
+				"contentType": contentType,
+				"data": data,
+				"type": type
+				};
+
+	msgQueue.push( obj );
+	sendMsgToServer();
+}
+
+function sendMsgToServer( verbType, msg ) {
+	$.ajax({
+			url: 'note/13',
+			contentType: 'application/json',
+			data: msg,
+			type: verbType,
+			success: function( data, status ) {
+				alert( data );
+			}
+		});
+	}
+
+
+
+/*********************************************************************************************/
 
 /*********************************************************************************************/
 /* Split */
@@ -151,6 +167,17 @@ function addSplit( id, top, upper, lower ) {
 var nextCardId = 0;
 var currentCardId = null;
 
+function updateCardToServer( id, top, left, title, description ) {
+	var obj = { "top": top,
+				"left": left,
+				"title": title,
+				"description": description
+				};
+	var msg = JSON.stringify( obj );
+	queueMsgToServer( 'card/' + id, 'application/json', msg, "PUT" );
+
+	}
+
 function createCardDialog() {
 	$( "#dialog-form-card" ).dialog({
 			autoOpen: false,
@@ -210,16 +237,10 @@ function addCard( id, top, left, title, description ) {
 	var cardId = "#card-" + cardId;
 	$( cardId ).draggable({
 		stop: function( event, ui ) {
-			alert( $(cardId + "-title").text() );
 			updateCardToServer( 16, ui.position.top, ui.position.left, $(cardId + "-title").text(), $(cardId + "-description").text() );
 		}
 	});
-	$( cardId ).mouseover( function() {
-		$( cardId ).addClass( "highlight" ) })
-		.mouseout( function() {
-		$( cardId ).removeClass( "highlight" ) })
-	;
-
+	addHighlight( cardId  );
 
 	$( "#card-" + cardId )
 				.click(function() {
@@ -237,6 +258,16 @@ function addCard( id, top, left, title, description ) {
 /* Note */
 var nextNoteId = 0;
 var currentNoteId = null;
+
+function updateNoteToServer( id, top, left, description ) {
+	var obj = { "top": top,
+				"left": left,
+				"description": description
+				};
+	var msg = JSON.stringify( obj );
+	queueMsgToServer( 'note/' + id, 'application/json', msg, "PUT" );
+
+	}
 
 function createNoteDialog() {
 	$( "#dialog-form-note" ).dialog({
@@ -258,7 +289,7 @@ function createNoteDialog() {
 							addNote( 4, 250, 400, noteDescription.val() );
 						} else {
 							$("#note-" + currentNoteId).text( noteDescription.val() );
-							putMsgToServer( '{ "description": "' + noteDescription.val() + '" }' );
+							updateNoteToServer( id, top, left, noteDescription.val() );
 						}
 						$( this ).dialog( "close" );
 					}
@@ -283,7 +314,13 @@ function addNote( id, top, left, description ) {
 				"</div>";
 
 	$( '#card-layout' ).append( string );
-	addInteraction( "#note-" + noteId );
+	var noteId = "#note-" + noteId;
+	$( noteId ).draggable({
+		stop: function( event, ui ) {
+			updateNoteToServer( 16, ui.position.top, ui.position.left, $(noteId).text() );
+		}
+	});
+	addHighlight(noteId);
 
 	$( "#note-" + noteId )
 				.click(function() {

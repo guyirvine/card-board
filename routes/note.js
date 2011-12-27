@@ -16,7 +16,7 @@ exports.create = function(req, res){
 };
 
 exports.update = function(req, res){
-	console.log( "POSTDATA4: " + req.params + ":" + req.params.note + ":" + req.body.description );
+	console.log( "POSTDATA4: " + req.params.note + ":" + req.body.description );
 
 	res.send( "Fling4" );
 };
