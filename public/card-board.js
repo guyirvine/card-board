@@ -212,7 +212,7 @@ function createCardDialog() {
 						} else {
 							$("#card-" + currentCardId + "-title").text($( "#card-title" ).val() );
 							$("#card-" + currentCardId + "-description").text($( "#card-description" ).val( ) );	
-							updateCardToServer( 16, 
+							updateCardToServer( currentCardId, 
 												$( "#card-" + currentCardId ).position().top, 
 												$( "#card-" + currentCardId ).position().left, 
 												$( "#card-title" ).val(), 
@@ -236,7 +236,8 @@ function createCardDialog() {
 }	
 
 function addCard( id, top, left, title, description ) {
-	var cardId = nextCardId++;
+//	var cardId = nextCardId++;
+	var cardId = id;
 	string = "" +
 			"<div id='card-" + cardId + "' class='card shadow' style='top: " + top + "px;left: " + left + "px;'>" +
 				"<div class='line' style='top: 25px;'>&nbsp;</div>" +
@@ -252,7 +253,7 @@ function addCard( id, top, left, title, description ) {
 	$( '#card-layout' ).append( string );
 	$( "#card-" + cardId ).draggable({
 		stop: function( event, ui ) {
-			updateCardToServer( 16, 
+			updateCardToServer( cardId, 
 								ui.position.top, 
 								ui.position.left, 
 								$("#card-" + cardId + "-title").text(), 
