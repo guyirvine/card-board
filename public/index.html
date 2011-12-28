@@ -58,7 +58,7 @@
 </div>
 
 <script>
-	var document_id = 1;
+	var document_id = getUrlVars()['document_id'];
 
 	$(function() {
 		$.getJSON('card?document_id=' + document_id, function(data) {
