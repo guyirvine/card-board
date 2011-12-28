@@ -2,13 +2,32 @@
  * GET home page.
  */
 var pg = require('pg');
-var dbClient = new pg.Client("tcp://postgres:1234@localhost/card-board");
-dbClient.connect();
 
 exports.index = function(req, res){
-	console.log( "CARD2: " + req.body.description );
+	var document_id = req.query.document_id;
+	var buffer = [];
 
-	res.send( "Fling2" );
+	var dbClient = new pg.Client("tcp://postgres:1234@localhost/card-board");
+	dbClient.connect();
+	var query = dbClient.query("SELECT id, top, left_, title, description FROM card_tbl WHERE document_id = $1", [document_id]);
+
+	query.on('row', function(row) {
+		var obj = { 'id': row.id,
+					'top': row.top,
+					'left': row.left_,
+					'title': row.title,
+					'description': row.description,
+					};
+		buffer.push( obj );
+	});
+
+	query.on('end', function() { 
+		dbClient.end();
+		res.json( buffer );
+	});
+
+	console.log( "POSTDATA2: index2: " + req.query.document_id );
+
 };
 
 exports.create = function(req, res){
@@ -22,6 +41,9 @@ exports.update = function(req, res){
 
 	res.send( "CARD4: " + req.body.left + ":" + req.body.title + ":" + req.body.description );
 
+	var dbClient = new pg.Client("tcp://postgres:1234@localhost/card-board");
+	dbClient.connect();
 	dbClient.query("UPDATE card_tbl SET top=$1, left_=$2, title=$3, description=$4 WHERE id = $5", [req.body.top, req.body.left, req.body.title, req.body.description, req.params.card]);
+	dbClient.end();
 
 };
