@@ -79,7 +79,7 @@ function sendMsgToServer() {
 							alert( "Timeout: 408" );
 						},
 					}
-					
+
 				});
 				updateMsgListDisplay();
 			}
@@ -236,7 +236,6 @@ function createCardDialog() {
 }	
 
 function addCard( id, top, left, title, description ) {
-//	var cardId = nextCardId++;
 	var cardId = id;
 	string = "" +
 			"<div id='card-" + cardId + "' class='card shadow' style='top: " + top + "px;left: " + left + "px;'>" +
@@ -329,7 +328,7 @@ function createNoteDialog() {
 	}
 	
 function addNote( id, top, left, description ) {
-	var noteId = nextNoteId++;
+	var noteId = id;
 	string = "" +
 			"<div id='note-" + noteId + "' class='note shadow' style='top: " + top + "px;left: " + left + "px;'>" +
 				description +
@@ -338,7 +337,7 @@ function addNote( id, top, left, description ) {
 	$( '#card-layout' ).append( string );
 	$( "#note-" + noteId ).draggable({
 		stop: function( event, ui ) {
-			updateNoteToServer( 16, ui.position.top, ui.position.left, $("#note-" + noteId).text() );
+			updateNoteToServer( noteId, ui.position.top, ui.position.left, $("#note-" + noteId).text() );
 		}
 	});
 	addHighlight("#note-" + noteId);

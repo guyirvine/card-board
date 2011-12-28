@@ -9,13 +9,13 @@ exports.index = function(req, res){
 
 	var dbClient = new pg.Client("tcp://postgres:1234@localhost/card-board");
 	dbClient.connect();
-	var query = dbClient.query("SELECT id, top, left_, description FROM note_tbl WHERE document_id = $1", [document_id]);
+	var query = dbClient.query("SELECT id, top, upper, lower FROM split_tbl WHERE document_id = $1", [document_id]);
 
 	query.on('row', function(row) {
 		var obj = { 'id': row.id,
 					'top': row.top,
-					'left': row.left_,
-					'description': row.description,
+					'upper': row.upper,
+					'lower': row.lower,
 					};
 		buffer.push( obj );
 	});
@@ -40,9 +40,8 @@ exports.update = function(req, res){
 
 	var dbClient = new pg.Client("tcp://postgres:1234@localhost/card-board");
 	dbClient.connect();
-	dbClient.query("UPDATE note_tbl SET top=$1, left_=$2, description=$3 WHERE id = $4", [req.body.top, req.body.left, req.body.description, req.params.note], function(err, result) {
-		dbClient.end();
-	});
+	dbClient.query("UPDATE split_tbl SET top=$1, upper=$2, lower=$3 WHERE id = $4", [req.body.top, req.body.upper, req.body.lower, req.params.split]);
+	dbClient.end();
  
 	res.send( "Fling4" );
 };

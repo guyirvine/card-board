@@ -8,6 +8,8 @@ INSERT INTO card_tbl( id, document_id, top, left_, title, description )
 
 INSERT INTO note_tbl( id, document_id, top, left_, description )
 	VALUES ( NEXTVAL( 'note_seq' ), CURRVAL( 'document_seq' ), 50, 50, 'This is a note which is also quite handy dandy' );
+INSERT INTO note_tbl( id, document_id, top, left_, description )
+	VALUES ( NEXTVAL( 'note_seq' ), CURRVAL( 'document_seq' ), 150, 250, 'This is another note' );
 
 INSERT INTO split_tbl( id, document_id, top, upper, lower )
 	VALUES ( NEXTVAL( 'split_seq' ), CURRVAL( 'document_seq' ), 300, 'Existing', 'New' );

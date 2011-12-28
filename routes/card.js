@@ -37,13 +37,17 @@ exports.create = function(req, res){
 };
 
 exports.update = function(req, res){
-	console.log( "CARD4: " + req.body.left + ":" + req.body.title + ":" + req.body.description );
-
-	res.send( "CARD4: " + req.body.left + ":" + req.body.title + ":" + req.body.description );
+	console.log( "CARD4: " + req.params.card + ":" + req.body.left + ":" + req.body.title + ":" + req.body.description );
 
 	var dbClient = new pg.Client("tcp://postgres:1234@localhost/card-board");
 	dbClient.connect();
-	dbClient.query("UPDATE card_tbl SET top=$1, left_=$2, title=$3, description=$4 WHERE id = $5", [req.body.top, req.body.left, req.body.title, req.body.description, req.params.card]);
-	dbClient.end();
+	dbClient.query("UPDATE card_tbl SET top=$1, left_=$2, title=$3, description=$4 WHERE id = $5", [req.body.top, req.body.left, req.body.title, req.body.description, req.params.card], function(err, result) {
+		dbClient.end();
+	});
 
-};
+	console.log( "UPDATE card_tbl SET top=$1, left_=$2, title=$3, description=$4 WHERE id = $5" );
+	console.log( req.body.top + ":" + req.body.left + ":" + req.body.title + ":" + req.body.description + ":" + req.params.card );
+	
+	res.send( "CARD4: " + req.params.card + ":" + req.body.left + ":" + req.body.title + ":" + req.body.description );
+
+	};

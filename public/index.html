@@ -58,12 +58,26 @@
 </div>
 
 <script>
-	$(function() {
+	var document_id = 1;
 
-		addCard( 1, 100, 100, "Repro Hub", "This is some blurb about Repro hub that will cut across multiple lines which is good.<br><br>List" );
-		addCard( 2, 200, 200, "New ONE", "Description" );
-		addNote( 1, 50, 50, "This is a note which is also quite handy dandy" );
-		addSplit( 1, 300, "Existing", "New" );
+	$(function() {
+		$.getJSON('card?document_id=' + document_id, function(data) {
+			$.each(data, function(key, val) {
+				addCard( val.id, val.top, val.left, val.title, val.description );
+			});
+		});
+
+		$.getJSON('note?document_id=' + document_id, function(data) {
+			$.each(data, function(key, val) {
+				addNote( val.id, val.top, val.left, val.description );
+			});
+		});
+
+		$.getJSON('split?document_id=' + document_id, function(data) {
+			$.each(data, function(key, val) {
+				addSplit( val.id, val.top, val.upper, val.lower );
+			});
+		});
 
 		createDialogs();
 	});
