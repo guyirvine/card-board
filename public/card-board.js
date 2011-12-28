@@ -213,8 +213,8 @@ function createCardDialog() {
 							$("#card-" + currentCardId + "-title").text($( "#card-title" ).val() );
 							$("#card-" + currentCardId + "-description").text($( "#card-description" ).val( ) );	
 							updateCardToServer( 16, 
-												$( "#card-" + currentCardId ).position.top, 
-												$( "#card-" + currentCardId ).position.left, 
+												$( "#card-" + currentCardId ).position().top, 
+												$( "#card-" + currentCardId ).position().left, 
 												$( "#card-title" ).val(), 
 												$( "#card-description" ).val( ) );
 						}
@@ -308,8 +308,8 @@ function createNoteDialog() {
 						} else {
 							$("#note-" + currentNoteId).text( noteDescription.val() );
 							updateNoteToServer( currentNoteId, 
-												$( "#note-" + currentNoteId ).position.top, 
-												$( "#note-" + currentNoteId ).position.left, 
+												$( "#note-" + currentNoteId ).position().top, 
+												$( "#note-" + currentNoteId ).position().left, 
 												$( "#note-description" ).val( ) );
 						}
 						$( this ).dialog( "close" );

@@ -14,7 +14,11 @@ DELETE  /forums/:forum       ->  destroy
 
 var express = require('express')
   , Resource = require('express-resource')
-  , app = module.exports = express.createServer();
+  , app = module.exports = express.createServer()
+  , pg = require('pg');
+  
+var dbClient = new pg.Client("tcp://postgres:1234@localhost/card-board");
+dbClient.connect();
 
 // Configuration
 
@@ -26,6 +30,7 @@ app.configure(function(){
 
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+//queries are queued and executed one after another once the connection becomes available
 });
 
 app.configure('production', function(){
