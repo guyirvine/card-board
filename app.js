@@ -17,9 +17,6 @@ var express = require('express')
   , app = module.exports = express.createServer()
   , pg = require('pg');
   
-var dbClient = new pg.Client("tcp://postgres:1234@localhost/card-board");
-dbClient.connect();
-
 // Configuration
 
 app.configure(function(){
@@ -28,9 +25,10 @@ app.configure(function(){
   app.use(express.static(__dirname + '/public'));
 });
 
+
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
-//queries are queued and executed one after another once the connection becomes available
+	global.dbConnString = "tcp://postgres:1234@localhost/card-board"
 });
 
 app.configure('production', function(){
