@@ -41,8 +41,12 @@ function checkRegexp( tipControl, o, regexp, n ) {
 
 /*********************************************************************************************/
 /* AJAX */
-var msgQueue = []
+var msgQueue = [];
 var sending = false;
+
+function updateMsgListDisplay() {
+//	$( "#msg-list" ).text( "Msg Count: " + msgQueue.length );
+}
 
 function sendMsgToServer() {
 //	alert( 'sendMsgToServer' );
@@ -55,17 +59,38 @@ function sendMsgToServer() {
 					contentType: obj.contentType,
 					data: obj.data,
 					type: obj.type,
+					processData: false,
+					timeout: 5000,
+					error: function( jqXHR, textStatus, errorThrown ) {
+//						alert( "Error" + ":" + textStatus + ":" + errorThrown );
+						msgQueue.unshift(obj);
+						sending = false;
+						setTimeout( "sendMsgToServer()", 2000 );
+					},
 					success: function( data, status ) {
 						sending = false;
 						sendMsgToServer();
+					},
+					statusCode: {
+						404: function() {
+							alert( "Page not found: 404" );
+						},
+						408: function() {
+							alert( "Timeout: 408" );
+						},
 					}
+					
 				});
+				updateMsgListDisplay();
 			}
+				updateMsgListDisplay();
 	}
+				updateMsgListDisplay();
 }
 
-function queueMsgToServer( url, contentType, data, type ) {
-	var obj = { "url": url,
+function queueMsgToServer( name, url, contentType, data, type ) {
+	var obj = { "name": name,
+				"url": url,
 				"contentType": contentType,
 				"data": data,
 				"type": type
@@ -74,20 +99,6 @@ function queueMsgToServer( url, contentType, data, type ) {
 	msgQueue.push( obj );
 	sendMsgToServer();
 }
-
-function sendMsgToServer( verbType, msg ) {
-	$.ajax({
-			url: 'note/13',
-			contentType: 'application/json',
-			data: msg,
-			type: verbType,
-			success: function( data, status ) {
-				alert( data );
-			}
-		});
-	}
-
-
 
 /*********************************************************************************************/
 
@@ -174,7 +185,7 @@ function updateCardToServer( id, top, left, title, description ) {
 				"description": description
 				};
 	var msg = JSON.stringify( obj );
-	queueMsgToServer( 'card/' + id, 'application/json', msg, "PUT" );
+	queueMsgToServer( 'updateCard', 'card/' + id, 'application/json', msg, "PUT" );
 
 	}
 
@@ -201,8 +212,13 @@ function createCardDialog() {
 						} else {
 							$("#card-" + currentCardId + "-title").text($( "#card-title" ).val() );
 							$("#card-" + currentCardId + "-description").text($( "#card-description" ).val( ) );	
+							updateCardToServer( 16, 
+												$( "#card-" + currentCardId ).position.top, 
+												$( "#card-" + currentCardId ).position.left, 
+												$( "#card-title" ).val(), 
+												$( "#card-description" ).val( ) );
 						}
-							
+
 						$( this ).dialog( "close" );
 					}
 				},
@@ -234,14 +250,16 @@ function addCard( id, top, left, title, description ) {
 				"</div>";
 
 	$( '#card-layout' ).append( string );
-	var cardId = "#card-" + cardId;
-	$( cardId ).draggable({
+	$( "#card-" + cardId ).draggable({
 		stop: function( event, ui ) {
-			updateCardToServer( 16, ui.position.top, ui.position.left, $(cardId + "-title").text(), $(cardId + "-description").text() );
+			updateCardToServer( 16, 
+								ui.position.top, 
+								ui.position.left, 
+								$("#card-" + cardId + "-title").text(), 
+								$("#card-" + cardId + "-description").text() );
 		}
 	});
-	addHighlight( cardId  );
-
+	addHighlight( "#card-" + cardId  );
 	$( "#card-" + cardId )
 				.click(function() {
 					currentCardId = cardId;
@@ -265,7 +283,7 @@ function updateNoteToServer( id, top, left, description ) {
 				"description": description
 				};
 	var msg = JSON.stringify( obj );
-	queueMsgToServer( 'note/' + id, 'application/json', msg, "PUT" );
+	queueMsgToServer( 'updateNote', 'note/' + id, 'application/json', msg, "PUT" );
 
 	}
 
@@ -289,7 +307,10 @@ function createNoteDialog() {
 							addNote( 4, 250, 400, noteDescription.val() );
 						} else {
 							$("#note-" + currentNoteId).text( noteDescription.val() );
-							updateNoteToServer( id, top, left, noteDescription.val() );
+							updateNoteToServer( currentNoteId, 
+												$( "#note-" + currentNoteId ).position.top, 
+												$( "#note-" + currentNoteId ).position.left, 
+												$( "#note-description" ).val( ) );
 						}
 						$( this ).dialog( "close" );
 					}
@@ -314,13 +335,12 @@ function addNote( id, top, left, description ) {
 				"</div>";
 
 	$( '#card-layout' ).append( string );
-	var noteId = "#note-" + noteId;
-	$( noteId ).draggable({
+	$( "#note-" + noteId ).draggable({
 		stop: function( event, ui ) {
-			updateNoteToServer( 16, ui.position.top, ui.position.left, $(noteId).text() );
+			updateNoteToServer( 16, ui.position.top, ui.position.left, $("#note-" + noteId).text() );
 		}
 	});
-	addHighlight(noteId);
+	addHighlight("#note-" + noteId);
 
 	$( "#note-" + noteId )
 				.click(function() {

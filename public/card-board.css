@@ -4,6 +4,12 @@ body {
 	font-family: MV Boli; Comic Sans MS;
 }
 
+#msg-list {
+		position: absolute;
+		top: 5px;
+		right: 10px;
+}
+
 .shadow {
   -moz-box-shadow:    3px 3px 3px 1px #999;
   -webkit-box-shadow: 3px 3px 3px 1px #999;
