@@ -3,7 +3,7 @@
  */
 var pg = require('pg');
 
-exports.index = function(req, res){
+exports.index = function(req, res) {
 	var document_id = req.query.document_id;
 	var buffer = [];
 
@@ -36,12 +36,14 @@ exports.create = function(req, res){
 };
 
 exports.update = function(req, res){
-	console.log( "POSTDATA4: " + req.params.note + ":" + req.body.description );
+	console.log( "Split: " + "UPDATE split_tbl SET top=$1, upper=$2, lower=$3 WHERE id = $4" );
+	console.log( "Split: " + req.body.top + ":" + req.body.upper+ ":" + req.body.lower+ ":" + req.params.split );
 
 	var dbClient = new pg.Client("tcp://postgres:1234@localhost/card-board");
 	dbClient.connect();
-	dbClient.query("UPDATE split_tbl SET top=$1, upper=$2, lower=$3 WHERE id = $4", [req.body.top, req.body.upper, req.body.lower, req.params.split]);
-	dbClient.end();
+	dbClient.query("UPDATE split_tbl SET top=$1, upper=$2, lower=$3 WHERE id = $4", [req.body.top, req.body.upper, req.body.lower, req.params.split], function(err, result) {
+		dbClient.end();
+	});
  
 	res.send( "Fling4" );
 };

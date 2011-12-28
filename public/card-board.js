@@ -107,6 +107,15 @@ function queueMsgToServer( name, url, contentType, data, type ) {
 var nextSplitId = 0;
 var currentSplitId = null;
 
+function updateSplitToServer( id, top, upper, lower ) {
+	var obj = { "top": top,
+				"upper": upper,
+				"lower": lower
+				};
+	var msg = JSON.stringify( obj );
+	queueMsgToServer( 'updateSplit', 'split/' + id, 'application/json', msg, "PUT" );
+}
+
 function createSplitDialog() {
 	$( "#dialog-form-split" ).dialog({
 			autoOpen: false,
@@ -127,6 +136,10 @@ function createSplitDialog() {
 						} else {
 							$("#split-" + currentSplitId + "-upper").text($( "#split-upper" ).val() );
 							$("#split-" + currentSplitId + "-lower").text($( "#split-lower" ).val( ) );	
+							updateSplitToServer( currentSplitId, 
+												$( "#split-" + currentSplitId ).position().top, 
+												$( "#split-upper" ).val(), 
+												$( "#split-lower" ).val( ) );
 						}
 							
 						$( this ).dialog( "close" );
@@ -147,7 +160,7 @@ function createSplitDialog() {
 
 
 function addSplit( id, top, upper, lower ) {
-	var splitId = nextSplitId++;
+	var splitId = id;
 	string = "" +
 			"<div id='split-" + splitId + "' class='split' style='top: " + top + "px;'>" +
 				"<div class='upper'id='split-" + splitId + "-upper'>" + upper + "</div>" +
@@ -155,7 +168,14 @@ function addSplit( id, top, upper, lower ) {
 			"</div>";
 	
 	$( '#split-layout' ).append( string );
-	$( "#split-" + splitId ).draggable( { axis: 'y' });
+	$( "#split-" + splitId ).draggable( { axis: 'y',
+		stop: function( event, ui ) {
+			updateSplitToServer( splitId,
+								ui.position.top,
+								$("#split-" + splitId + "-upper").text(), 
+								$("#split-" + splitId + "-lower").text() );
+		}
+	});
 	$( "#split-" + splitId ).mouseover( function() {
 		$( id ).addClass( "highlight" ) })
 		.mouseout( function() {
