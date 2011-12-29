@@ -91,7 +91,7 @@ function sendMsgToServer() {
 							if (!( obj.id in idLookup )) {
 								var dataObj = JSON.parse( data );
 								idLookup[obj.id] = dataObj.id;
-								alert( data + ":" + dataObj.id );
+//								alert( data + ":" + dataObj.id );
 							}
 						}
 						sending = false;
