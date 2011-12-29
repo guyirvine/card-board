@@ -1,5 +1,8 @@
 /*********************************************************************************************/
 /* UI Helpers */
+var nextId=-1;
+var idLookup=[];
+
 // Read a page's GET URL variables and return them as an associative array.
 function getUrlVars()
 {
@@ -72,17 +75,25 @@ function sendMsgToServer() {
 			$.ajax({
 					url: obj.url,
 					contentType: obj.contentType,
-					data: obj.data,
+					accepts: "application/json",
+					data: JSON.stringify( obj.data ),
 					type: obj.type,
 					processData: false,
 					timeout: 5000,
 					error: function( jqXHR, textStatus, errorThrown ) {
-//						alert( "Error" + ":" + textStatus + ":" + errorThrown );
+						alert( "Error" + "	. rt:" + jqXHR.responseText + ". s:" + jqXHR.status + ". st:" + jqXHR.statusText + ". ts:" + textStatus + ":" + errorThrown );
 						msgQueue.unshift(obj);
 						sending = false;
 						setTimeout( "sendMsgToServer()", 2000 );
 					},
 					success: function( data, status ) {
+						if ( obj.id != undefined ) {
+							if (!( obj.id in idLookup )) {
+								var dataObj = JSON.parse( data );
+								idLookup[obj.id] = dataObj.id;
+								alert( data + ":" + dataObj.id );
+							}
+						}
 						sending = false;
 						sendMsgToServer();
 					},
@@ -103,11 +114,12 @@ function sendMsgToServer() {
 				updateMsgListDisplay();
 }
 
-function queueMsgToServer( name, url, contentType, data, type ) {
-	var obj = { "name": name,
+function queueMsgToServer( id, name, url, contentType, obj, type ) {
+	var obj = { "id": id,
+				"name": name,
 				"url": url,
 				"contentType": contentType,
-				"data": data,
+				"data": obj,
 				"type": type
 				};
 
@@ -119,7 +131,6 @@ function queueMsgToServer( name, url, contentType, data, type ) {
 
 /*********************************************************************************************/
 /* Split */
-var nextSplitId = 0;
 var currentSplitId = null;
 
 function updateSplitToServer( id, top, upper, lower ) {
@@ -127,9 +138,18 @@ function updateSplitToServer( id, top, upper, lower ) {
 				"upper": upper,
 				"lower": lower
 				};
-	var msg = JSON.stringify( obj );
-	queueMsgToServer( 'updateSplit', 'split/' + id, 'application/json', msg, "PUT" );
+	queueMsgToServer( null, 'updateSplit', 'split/' + id, 'application/json', obj, "PUT" );
 }
+
+function createSplitToServer( id, top, upper, lower ) {
+	var obj = { "document_id": getUrlVars()['document_id'],
+				"top": top,
+				"upper": upper,
+				"lower": lower
+				};
+	queueMsgToServer( id, 'createSplit', 'split/', 'application/json', obj, "POST" );
+
+	}
 
 function createSplitDialog() {
 	$( "#dialog-form-split" ).dialog({
@@ -147,7 +167,9 @@ function createSplitDialog() {
 
 					if ( bValid ) {
 						if ( currentSplitId == null ) {
-							addSplit( 4, 250, splitUpper.val(), splitLower.val() );
+							splitId = nextId--;
+							createSplitToServer( splitId, 250, splitUpper.val(), splitLower.val() );
+							addSplit( splitId, 250, splitUpper.val(), splitLower.val() );
 						} else {
 							$("#split-" + currentSplitId + "-upper").text($( "#split-upper" ).val() );
 							$("#split-" + currentSplitId + "-lower").text($( "#split-lower" ).val( ) );	
@@ -210,7 +232,6 @@ function addSplit( id, top, upper, lower ) {
 
 /*********************************************************************************************/
 /* Card */
-var nextCardId = 0;
 var currentCardId = null;
 
 function updateCardToServer( id, top, left, title, description ) {
@@ -219,8 +240,18 @@ function updateCardToServer( id, top, left, title, description ) {
 				"title": title,
 				"description": description
 				};
-	var msg = JSON.stringify( obj );
-	queueMsgToServer( 'updateCard', 'card/' + id, 'application/json', msg, "PUT" );
+	queueMsgToServer( null, 'updateCard', 'card/' + id, 'application/json', obj, "PUT" );
+
+	}
+
+function createCardToServer( id, top, left, title, description ) {
+	var obj = { "document_id": getUrlVars()['document_id'],
+				"top": top,
+				"left": left,
+				"title": title,
+				"description": description
+				};
+	queueMsgToServer( id, 'createCard', 'card/', 'application/json', obj, "POST" );
 
 	}
 
@@ -243,11 +274,13 @@ function createCardDialog() {
 
 					if ( bValid ) {
 						if ( currentCardId == null ) {
-							addCard( 4, 250, 250, cardTitle.val(), cardDescription.val() );
+							cardId = nextId--;
+							createCardToServer( cardId, 250, 400, cardTitle.val(), cardDescription.val() );
+							addCard( cardId, 250, 250, cardTitle.val(), cardDescription.val() );
 						} else {
 							$("#card-" + currentCardId + "-title").text($( "#card-title" ).val() );
 							$("#card-" + currentCardId + "-description").text($( "#card-description" ).val( ) );	
-							updateCardToServer( currentCardId, 
+							updateCardToServer( currentCardId,
 												$( "#card-" + currentCardId ).position().top, 
 												$( "#card-" + currentCardId ).position().left, 
 												$( "#card-title" ).val(), 
@@ -309,16 +342,25 @@ function addCard( id, top, left, title, description ) {
 
 /*********************************************************************************************/
 /* Note */
-var nextNoteId = 0;
 var currentNoteId = null;
 
 function updateNoteToServer( id, top, left, description ) {
+	id_ = ( id < 0 ) ? idLookup[id] : id;
 	var obj = { "top": top,
 				"left": left,
 				"description": description
 				};
-	var msg = JSON.stringify( obj );
-	queueMsgToServer( 'updateNote', 'note/' + id, 'application/json', msg, "PUT" );
+	queueMsgToServer( null, 'updateNote', 'note/' + id_, 'application/json', obj, "PUT" );
+
+	}
+
+function createNoteToServer( id, top, left, description ) {
+	var obj = { "document_id": getUrlVars()['document_id'],
+				"top": top,
+				"left": left,
+				"description": description
+				};
+	queueMsgToServer( id, 'createNote', 'note/', 'application/json', obj, "POST" );
 
 	}
 
@@ -339,7 +381,9 @@ function createNoteDialog() {
 
 					if ( bValid ) {
 						if ( currentNoteId == null ) {
-							addNote( 4, 250, 400, noteDescription.val() );
+							noteId = nextId--;
+							createNoteToServer( noteId, 250, 400, noteDescription.val() );
+							addNote( noteId, 250, 400, noteDescription.val() );
 						} else {
 							$("#note-" + currentNoteId).text( noteDescription.val() );
 							updateNoteToServer( currentNoteId, 

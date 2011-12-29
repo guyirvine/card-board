@@ -31,9 +31,24 @@ exports.index = function(req, res){
 };
 
 exports.create = function(req, res){
-	console.log( "CARD3: " + req.body.description );
+	var dbClient = new pg.Client(dbConnString);
+	dbClient.connect();
 
-	res.send( "Fling3" );
+	var idQuery = dbClient.query("SELECT NEXTVAL( 'card_seq' ) AS card_id" );
+	idQuery.on('row', function(row) {
+		var card_id = row.card_id;
+		insertQuery = dbClient.query("INSERT INTO card_tbl( id, document_id, top, left_, title, description ) VALUES ( $1, $2, $3, $4, $5, $6 )", [card_id, req.body.document_id, req.body.top, req.body.left, req.body.title, req.body.description] );
+
+		insertQuery.on('end', function(row) {
+			dbClient.end();
+			console.log( "card.create.id: " + card_id );
+			var obj = { "id": card_id };
+			res.send( JSON.stringify( obj ) );
+		});
+		
+
+	});
+
 };
 
 exports.update = function(req, res){

@@ -30,9 +30,24 @@ exports.index = function(req, res) {
 };
 
 exports.create = function(req, res){
-	console.log( "POSTDATA3: " + req.body.description );
+	var dbClient = new pg.Client(dbConnString);
+	dbClient.connect();
 
-	res.send( "Fling3" );
+	var idQuery = dbClient.query("SELECT NEXTVAL( 'split_seq' ) AS split_id" );
+	idQuery.on('row', function(row) {
+		var split_id = row.split_id;
+		insertQuery = dbClient.query("INSERT INTO split_tbl( id, document_id, top, upper, lower ) VALUES ( $1, $2, $3, $4, $5 )", [split_id, req.body.document_id, req.body.top, req.body.upper, req.body.lower] );
+
+		insertQuery.on('end', function(row) {
+			dbClient.end();
+			console.log( "split.create.id: " + split_id );
+			var obj = { "id": split_id };
+			res.send( JSON.stringify( obj ) );
+		});
+		
+
+	});
+
 };
 
 exports.update = function(req, res){

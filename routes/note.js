@@ -32,7 +32,24 @@ exports.index = function(req, res){
 exports.create = function(req, res){
 	console.log( "POSTDATA3: " + req.body.description );
 
-	res.send( "Fling3" );
+	var dbClient = new pg.Client(dbConnString);
+	dbClient.connect();
+
+	var idQuery = dbClient.query("SELECT NEXTVAL( 'note_seq' ) AS note_id" );
+	idQuery.on('row', function(row) {
+		var note_id = row.note_id;
+		insertQuery = dbClient.query("INSERT INTO note_tbl( id, document_id, top, left_, description ) VALUES ( $1, $2, $3, $4, $5 )", [note_id, req.body.document_id, req.body.top, req.body.left, req.body.description] );
+
+		insertQuery.on('end', function(row) {
+			dbClient.end();
+			console.log( "note.create.id: " + note_id );
+			var obj = { "id": note_id };
+			res.send( JSON.stringify( obj ) );
+		});
+		
+
+	});
+
 };
 
 exports.update = function(req, res){
