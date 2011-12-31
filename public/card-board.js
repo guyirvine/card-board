@@ -134,11 +134,12 @@ function queueMsgToServer( id, name, url, contentType, obj, type ) {
 var currentSplitId = null;
 
 function updateSplitToServer( id, top, upper, lower ) {
+	var id_ = ( id < 0 ) ? idLookup[id] : id;
 	var obj = { "top": top,
 				"upper": upper,
 				"lower": lower
 				};
-	queueMsgToServer( null, 'updateSplit', 'split/' + id, 'application/json', obj, "PUT" );
+	queueMsgToServer( null, 'updateSplit', 'split/' + id_, 'application/json', obj, "PUT" );
 }
 
 function createSplitToServer( id, top, upper, lower ) {
@@ -235,12 +236,13 @@ function addSplit( id, top, upper, lower ) {
 var currentCardId = null;
 
 function updateCardToServer( id, top, left, title, description ) {
+	var id_ = ( id < 0 ) ? idLookup[id] : id;
 	var obj = { "top": top,
 				"left": left,
 				"title": title,
 				"description": description
 				};
-	queueMsgToServer( null, 'updateCard', 'card/' + id, 'application/json', obj, "PUT" );
+	queueMsgToServer( null, 'updateCard', 'card/' + id_, 'application/json', obj, "PUT" );
 
 	}
 
