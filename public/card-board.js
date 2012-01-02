@@ -485,7 +485,7 @@ function createTrashcan() {
 			var id = parts[1];
 			if ( parts.length == 3 ) { id = parts[2] * -1; };
 			var id_ = ( id < 0 ) ? idLookup[id] : id;
-			alert( divId + ":" + parts.length + ":" + id + ":" + id_ );
+//			alert( divId + ":" + parts.length + ":" + id + ":" + id_ );
 			queueMsgToServer( null, 'delete' + name, name + '/' + id_, 'application/json', {}, "DELETE" );
 		}
 	});
