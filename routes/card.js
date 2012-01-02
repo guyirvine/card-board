@@ -43,7 +43,7 @@ exports.create = function(req, res){
 			dbClient.end();
 			console.log( "card.create.id: " + card_id );
 			var obj = { "id": card_id };
-			res.send( JSON.stringify( obj ) );
+			res.json( obj );
 		});
 		
 
@@ -64,5 +64,19 @@ exports.update = function(req, res){
 	console.log( req.body.top + ":" + req.body.left + ":" + req.body.title + ":" + req.body.description + ":" + req.params.card );
 	
 	res.send( "CARD4: " + req.params.card + ":" + req.body.left + ":" + req.body.title + ":" + req.body.description );
+
+	};
+
+exports.destroy = function(req, res){
+	var dbClient = new pg.Client(dbConnString);
+	dbClient.connect();
+	dbClient.query("DELETE FROM card_tbl WHERE id = $1", [req.params.card], function(err, result) {
+		dbClient.end();
+	});
+
+	console.log( "DELETE FROM card_tbl WHERE id = $1. " + req.params.card );
+	
+	var obj = { "id": req.params.card };
+	res.json( obj );
 
 	};

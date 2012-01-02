@@ -17,6 +17,8 @@
 		<button id="create-split">Create new split</button>
 		<button id="create-card">Create new card</button>
 		<button id="create-note">Create new note</button>
+		
+		<div id="trash-can" style="position: absolute;bottom: 10px;left: 10px;border: 1px solid black;padding: 6 9;"><p>Trash&nbsp;Can</p></div>
 	</div>
 
 <div id="dialog-form-split" title="Create a new split">
@@ -80,6 +82,24 @@
 		});
 
 		createDialogs();
+		
+		$( "#trash-can" ).droppable({
+			over: function( event, ui ) {
+				$( this )
+					.addClass( "ui-state-highlight" );
+			},
+			out: function( event, ui ) {
+				$( this )
+					.removeClass( "ui-state-highlight" );
+			},
+			drop: function( event, ui ) {
+				$( this )
+					.addClass( "ui-state-highlight" )
+					.find( "p" )
+						.html( "Dropped!" );
+			}
+		});
+
 	});
 
 </script>

@@ -54,11 +54,19 @@ var suite = vows.describe('API Localhost HTTP Tests')
       common.post('card', obj, this.callback)
     },
     'should be 200': common.assertStatus(200),
-    'log response body': common.logResponseBody(),
     'should have JSON header' : common.assertJSONHead(),
     'body is valid JSON' : common.assertValidJSON(),
   },
 })
+
+.addBatch({
+  'card#delete': {
+    topic: function(){
+      common.del('card/1', {}, this.callback)
+    },
+    'should be 200': common.assertStatus(200),
+  },
+});
 
 //suite.run( )
 suite.export( module )
