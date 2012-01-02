@@ -27,12 +27,12 @@ exports.index = function(req, res){
 };
 
 exports.show = function(req, res){
-	var document_id = req.query.document_id;
+	var document_id = req.params.document;
 	var buffer = [];
 
 	var dbClient = new pg.Client(dbConnString);
 	dbClient.connect();
-	var query = dbClient.query("SELECT id, title FROM document_tbl WHERE document_id = $1", [document_id]);
+	var query = dbClient.query("SELECT id, title FROM document_tbl WHERE id = $1", [document_id]);
 
 	query.on('row', function(row) {
 		var obj = { 'id': row.id,
@@ -46,7 +46,7 @@ exports.show = function(req, res){
 		res.json( buffer );
 	});
 
-	console.log( "POSTDATA2: index2: " + req.query.document_id );
+	console.log( "document.show." + req.params.document );
 
 	};
 
