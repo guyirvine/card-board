@@ -42,5 +42,23 @@ var suite = vows.describe('API Localhost HTTP Tests')
   },
 })
 
+.addBatch({
+  'card#create': {
+    topic: function(){
+	var obj = { "document_id": 1,
+				"top": 2,
+				"left": 3,
+				"title": 'title',
+				"description": 'description'
+				};
+      common.post('card', obj, this.callback)
+    },
+    'should be 200': common.assertStatus(200),
+    'log response body': common.logResponseBody(),
+    'should have JSON header' : common.assertJSONHead(),
+    'body is valid JSON' : common.assertValidJSON(),
+  },
+})
+
 //suite.run( )
 suite.export( module )
