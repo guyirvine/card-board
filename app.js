@@ -42,6 +42,7 @@ app.configure('production', function(){
 app.resource('note', require('./routes/note'));
 app.resource('card', require('./routes/card'));
 app.resource('split', require('./routes/split'));
+app.resource('document', require('./routes/document'));
 
 app.listen(cardBoardPort);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
