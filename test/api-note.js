@@ -30,31 +30,6 @@ var suite = vows.describe('API Localhost HTTP Tests')
   }
 })
 
-/*
-.addBatch(
-{
-  'Authenticate to /login': {
-    topic: function(){
-      request.post(
-        {
-          url: "http://localhost:8010/login",
-          json: { user:{ username: 'flockin_lab', password: '123456' }}
-        },
-        this.callback
-      );
-    },
-
-    'get a valid Cookie': function(req, res, body, err){
-      try{
-        cookie = res.headers['set-cookie'].pop().split(';')[0]
-        console.log("GOT COOKIE!", cookie)
-      } catch(e){ }
-
-      assert.ok( typeof(cookie) == 'string' && cookie.length > 10 )
-    }
-})
-*/
-
 
 .addBatch({
   'note#index': {
