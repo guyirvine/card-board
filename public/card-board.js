@@ -461,4 +461,32 @@ function createDialogs() {
 					$( "#dialog-form-split" ).dialog( "open" );
 				});
 	}
-	
+
+function createTrashcan() {
+
+	$( "#trash-can" ).droppable({
+		over: function( event, ui ) {
+			$( this )
+				.addClass( "ui-state-highlight" );
+		},
+		out: function( event, ui ) {
+			$( this )
+				.removeClass( "ui-state-highlight" );
+		},
+		drop: function( event, ui ) {
+			$( this )
+				.removeClass( "ui-state-highlight" );
+
+			$( ui.draggable ).remove();
+
+			var divId = $( ui.draggable )[0].id;
+			var parts = divId.split( "-", 3 );
+			var name = parts[0];
+			var id = parts[1];
+			if ( parts.length == 3 ) { id = parts[2] * -1; };
+			var id_ = ( id < 0 ) ? idLookup[id] : id;
+			alert( divId + ":" + parts.length + ":" + id + ":" + id_ );
+			queueMsgToServer( null, 'delete' + name, name + '/' + id_, 'application/json', {}, "DELETE" );
+		}
+	});
+};
