@@ -82,7 +82,7 @@
 		});
 
 		createDialogs();
-		
+
 		$( "#trash-can" ).droppable({
 			over: function( event, ui ) {
 				$( this )
@@ -94,9 +94,16 @@
 			},
 			drop: function( event, ui ) {
 				$( this )
-					.addClass( "ui-state-highlight" )
-					.find( "p" )
-						.html( "Dropped!" );
+					.removeClass( "ui-state-highlight" );
+
+				$( ui.draggable ).remove();
+
+				var divId = $( ui.draggable )[0].id;
+				var parts = divId.split( "-" );
+				var name = parts[0];
+				var id = parts[1];
+				var id_ = ( id < 0 ) ? idLookup[id] : id;
+				queueMsgToServer( null, 'delete' + name, name + '/' + id_, 'application/json', {}, "DELETE" );
 			}
 		});
 

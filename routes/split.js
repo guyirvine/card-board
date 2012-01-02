@@ -62,3 +62,17 @@ exports.update = function(req, res){
  
 	res.send( "Fling4" );
 };
+
+exports.destroy = function(req, res){
+	var dbClient = new pg.Client(dbConnString);
+	dbClient.connect();
+	dbClient.query("DELETE FROM split_tbl WHERE id = $1", [req.params.split], function(err, result) {
+		dbClient.end();
+	});
+
+	console.log( "DELETE FROM split_tbl WHERE id = $1. " + req.params.split );
+	
+	var obj = { "id": req.params.card };
+	res.json( obj );
+
+	};

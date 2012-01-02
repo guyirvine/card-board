@@ -42,5 +42,14 @@ var suite = vows.describe('API Localhost HTTP Tests')
   },
 })
 
+.addBatch({
+  'note#delete': {
+    topic: function(){
+      common.del('note/1', {}, this.callback)
+    },
+    'should be 200': common.assertStatus(200),
+  },
+});
+
 //suite.run( )
 suite.export( module )

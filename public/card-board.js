@@ -327,6 +327,9 @@ function addCard( id, top, left, title, description ) {
 								ui.position.left, 
 								$("#card-" + cardId + "-title").text(), 
 								$("#card-" + cardId + "-description").text() );
+		},
+		drop: function(event, ui ) {
+			alert( "Here" );
 		}
 	});
 	addHighlight( "#card-" + cardId  );
