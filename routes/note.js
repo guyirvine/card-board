@@ -44,7 +44,7 @@ exports.create = function(req, res){
 			dbClient.end();
 			console.log( "note.create.id: " + note_id );
 			var obj = { "id": note_id };
-			res.send( JSON.stringify( obj ) );
+			res.json( obj );
 		});
 		
 
@@ -62,6 +62,7 @@ exports.update = function(req, res){
 	});
  
 	res.send( "Fling4" );
+
 };
 
 

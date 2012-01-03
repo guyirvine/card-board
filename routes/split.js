@@ -42,7 +42,7 @@ exports.create = function(req, res){
 			dbClient.end();
 			console.log( "split.create.id: " + split_id );
 			var obj = { "id": split_id };
-			res.send( JSON.stringify( obj ) );
+			res.json( obj );
 		});
 		
 
