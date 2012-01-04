@@ -1,7 +1,7 @@
 body {
 	font-family: MV Boli; Comic Sans MS;
 	margin: 10px;
-	background-color: #FCFCFC;
+	background-color: #F0F0F0;
 	border: 1px solid black;
 }
 
@@ -27,12 +27,28 @@ div#trash-can.trashcan-hover {
 }
 
 #document-title {
-	position: absolute;
-	top: 10px;
-	right: 30px;
 	padding: 6px 9px;
 	font-size: 26pt;
-	text-decoration: underline;
+	font-family: Arial;
+}
+
+#create-card {
+	position: absolute;
+	right: 13px;
+	top: 11px;
+	width: 115px;
+}
+#create-note {
+	position: absolute;
+	right: 13px;
+	top: 55px;
+	width: 115px;
+}
+#create-split {
+	position: absolute;
+	right: 13px;
+	top: 99px;
+	width: 115px;
 }
 
 .shadow {
@@ -111,6 +127,11 @@ div#trash-can.trashcan-hover {
 
 #split-layout div.upper {
 	border-bottom: 3px solid black;
+}
+
+#split-layout div.upper, #split-layout div.lower {
+	font-family: Arial;
+	padding: 3px 6px;
 }
 
 textarea, .uiwidget, textarea.uiwidget {
