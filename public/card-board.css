@@ -11,12 +11,19 @@ body {
 		right: 10px;
 }
 
-#trash-can {
+div#trash-can {
 	position: absolute;
-	bottom: 10px;
-	left: 10px;
-	border: 1px solid black;
+	bottom: 11px;
+	left: 11px;
+	border: 1px solid #F9F9F9;
 	padding: 6px 9px;
+	background: url(images/trash.png) no-repeat center;
+	width: 40px;
+	height: 50px;
+}
+div#trash-can.trashcan-hover {
+	color: green;
+	background-image: url(images/trash-action.png);
 }
 
 #document-title {

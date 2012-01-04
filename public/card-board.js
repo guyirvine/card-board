@@ -467,15 +467,15 @@ function createTrashcan() {
 	$( "#trash-can" ).droppable({
 		over: function( event, ui ) {
 			$( this )
-				.addClass( "ui-state-highlight" );
+				.addClass( "trashcan-hover" );
 		},
 		out: function( event, ui ) {
 			$( this )
-				.removeClass( "ui-state-highlight" );
+				.removeClass( "trashcan-hover" );
 		},
 		drop: function( event, ui ) {
 			$( this )
-				.removeClass( "ui-state-highlight" );
+				.removeClass( "trashcan-hover" );
 
 			$( ui.draggable ).remove();
 
