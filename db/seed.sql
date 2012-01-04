@@ -1,4 +1,17 @@
 INSERT INTO document_tbl( id, title )
+	VALUES ( -1, 'Test Document' );
+
+INSERT INTO card_tbl( id, document_id, top, left_, title, description )
+	VALUES ( -1, -1, 100, 100, 'Test Card', 'Test Card Description' );
+
+INSERT INTO note_tbl( id, document_id, top, left_, description )
+	VALUES ( -1, -1, 50, 50, 'Test Note' );
+
+INSERT INTO split_tbl( id, document_id, top, upper, lower )
+	VALUES ( -1, -1, 300, 'Test Upper', 'Test Lower' );
+
+
+INSERT INTO document_tbl( id, title )
 	VALUES ( NEXTVAL( 'document_seq' ), 'Repro Hub' );
 
 INSERT INTO card_tbl( id, document_id, top, left_, title, description )
