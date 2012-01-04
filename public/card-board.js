@@ -468,10 +468,12 @@ function createTrashcan() {
 		over: function( event, ui ) {
 			$( this )
 				.addClass( "trashcan-hover" );
+			$( ui.draggable ).css( "background-color", "#FF3333" );
 		},
 		out: function( event, ui ) {
 			$( this )
 				.removeClass( "trashcan-hover" );
+			$( ui.draggable ).css( "background-color", "" );
 		},
 		drop: function( event, ui ) {
 			$( this )
