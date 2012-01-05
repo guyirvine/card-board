@@ -1,85 +1,52 @@
 /*
- * GET home page.
+ * Rest Resource: document
  */
-var pg = require('pg');
 
 exports.index = function(req, res){
-	var buffer = [];
+	console.log( "document.index." );
 
-	var dbClient = new pg.Client(dbConnString);
-	dbClient.connect();
-	var query = dbClient.query("SELECT id, title FROM document_tbl", []);
-
-	query.on('row', function(row) {
-		var obj = { 'id': row.id,
-					'title': row.title,
-					};
-		buffer.push( obj );
+	res.local( 'db' ).queryForResultSet( "SELECT id, title FROM document_tbl", [], function( list ) {
+		res.json( list );
+		console.log( "document.index." );
 	});
-
-	query.on('end', function() { 
-		dbClient.end();
-		res.json( buffer );
-	});
-
-	console.log( "POSTDATA2: index2: " + req.query.document_id );
 
 };
 
 exports.show = function(req, res){
-	var document_id = req.params.document;
-	var buffer = [];
+	console.log( "document.show. " + req.params.document );
 
-	var dbClient = new pg.Client(dbConnString);
-	dbClient.connect();
-	var query = dbClient.query("SELECT id, title FROM document_tbl WHERE id = $1", [document_id]);
+	res.local( 'db' ).queryForRow( "SELECT id, title FROM document_tbl WHERE id = $1", [req.params.document], function( row ) {
+		if ( typeof row === 'undefined' ) { res.send( 404 ); return; };
 
-	query.on('row', function(row) {
-		var obj = { 'id': row.id,
-					'title': row.title,
-					};
-		buffer.push( obj );
+
+		res.json( row );
+		console.log( "document.show. " + req.params.document );
 	});
 
-	query.on('end', function() { 
-		dbClient.end();
-		res.json( buffer );
-	});
 
-	console.log( "document.show." + req.params.document );
+};
 
-	};
 
 exports.create = function(req, res){
-	var dbClient = new pg.Client(dbConnString);
-	dbClient.connect();
+	console.log( "reading.insert" );
 
-	var idQuery = dbClient.query("SELECT NEXTVAL( 'document_seq' ) AS document_id" );
-	idQuery.on('row', function(row) {
-		var document_id = row.document_id;
-		insertQuery = dbClient.query("INSERT INTO document_tbl( id, title ) VALUES ( $1, $2 )", [document_id, req.body.title] );
-
-		insertQuery.on('end', function(row) {
-			dbClient.end();
-			console.log( "document.create.id: " + document_id );
-			var obj = { "id": document_id };
-			res.json( obj );
-		});
-		
-
+	var fields = [ 'id', 'title' ];
+	var values = [req.body.title];
+	res.local( 'db' ).insert( 'document', fields, values, function( document_id ) {
+		res.json( { "id": document_id } );
+		console.log( "document.create. id: " + document_id );
 	});
+
 
 };
 
 exports.update = function(req, res) {
+	console.log( "document.update. req.params.document: " + req.params.document );
 
-	var dbClient = new pg.Client(dbConnString);
-	dbClient.connect();
-	dbClient.query("UPDATE document_tbl SET title=$1 WHERE id = $2", [req.body.title, req.params.document], function(err, result) {
-		dbClient.end();
+	res.local( 'db' ).execute( "UPDATE document_tbl SET title=$1 WHERE id = $2", [req.body.title, req.params.document], function() {
+		res.json( { "id": req.params.document } );
+		console.log( "document.update. req.params.document: " + req.params.document );
 	});
 
-	res.send( "document4: " + req.params.document );
-
-	};
+};
 

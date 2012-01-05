@@ -42,6 +42,28 @@ var suite = vows.describe('API Localhost HTTP Tests')
   },
 })
 
+
+.addBatch({
+	'document#show': {
+		topic: function(){
+			common.get('document/-1', {}, this.callback)
+		},
+		'should be 200': common.assertStatus(200),
+		'should have JSON header' : common.assertJSONHead(),
+		'body is valid JSON' : common.assertValidJSON(),
+		'body is valid device' : function() {
+			return function(res, b ){
+				var obj = { 'id': -1,
+							'title': 'Test Document',
+							};
+				
+				assert.equal( JSON.stringify( res.body ), JSON.stringify( obj ) )
+			}
+		}(),
+	},
+})
+
+
 .addBatch({
   'document#create': {
     topic: function(){

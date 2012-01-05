@@ -32,15 +32,32 @@ var suite = vows.describe('API Localhost HTTP Tests')
 
 
 .addBatch({
-  'card#index': {
-    topic: function(){
-      common.get('card', {}, this.callback)
-    },
-    'should be 200': common.assertStatus(200),
-    'should have JSON header' : common.assertJSONHead(),
-    'body is valid JSON' : common.assertValidJSON(),
-  },
+	'card#index': {
+		topic: function(){
+			common.get('card/?document_id=-1', {}, this.callback)
+		},
+		'should be 200': common.assertStatus(200),
+		'should have JSON header' : common.assertJSONHead(),
+		'body is valid JSON' : common.assertValidJSON(),
+	},
 })
+
+
+.addBatch({
+	'card#index without document filter': {
+		topic: function(){
+			common.get('card/', {}, this.callback)
+		},
+		'should be 400': common.assertStatus(400),
+		'body is valid msg' : function() {
+			return function(res, b ){
+				assert.equal( res.body, "URI must contain a filter for: document_id" )
+			}
+		}(),
+	},
+})
+
+
 
 .addBatch({
   'card#create': {

@@ -30,6 +30,13 @@ app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
 	global.dbConnString = "tcp://postgres:1234@localhost/card-board";
 	global.cardBoardPort = 3000;
+
+	var db = require('db');
+	app.all( '/*', function(req, res, next){
+		res.local( 'db', db );
+		
+		next();
+	});
 });
 
 app.configure('production', function(){
