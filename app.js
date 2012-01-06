@@ -43,6 +43,12 @@ app.configure('production', function(){
   app.use(express.errorHandler()); 
 	global.dbConnString = "tcp://postgres:1234@localhost/card-board-prod"
 	global.cardBoardPort = 3001;
+	var db = require('db');
+	app.all( '/*', function(req, res, next){
+		res.local( 'db', db );
+		
+		next();
+	});
 });
 
 // Routes
