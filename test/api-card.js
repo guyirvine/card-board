@@ -76,6 +76,55 @@ var suite = vows.describe('API Localhost HTTP Tests')
   },
 })
 
+
+.addBatch({
+  'card#create make sure floats are accepted for top and left.': {
+    topic: function(){
+	var obj = { "document_id": 1,
+				"top": 2.1234,
+				"left": 3.1234,
+				"title": 'title',
+				"description": 'description'
+				};
+      common.post('card', obj, this.callback)
+    },
+    'should be 200': common.assertStatus(200),
+    'should have JSON header' : common.assertJSONHead(),
+    'body is valid JSON' : common.assertValidJSON(),
+  },
+})
+
+
+.addBatch({
+  'card#update': {
+    topic: function(){
+	var obj = { "document_id": 1,
+				"top": 2,
+				"left": 3,
+				"title": 'title',
+				"description": 'description'
+				};
+      common.put('card/-1', obj, this.callback)
+    },
+    'should be 200': common.assertStatus(200),
+  },
+})
+
+.addBatch({
+  'card#update. make sure floats are accepted for top and left.': {
+    topic: function(){
+	var obj = { "document_id": 1,
+				"top": 2.1234,
+				"left": 3.1234,
+				"title": 'title',
+				"description": 'description'
+				};
+      common.put('card/-1', obj, this.callback)
+    },
+    'should be 200': common.assertStatus(200),
+  },
+})
+
 .addBatch({
   'card#delete': {
     topic: function(){

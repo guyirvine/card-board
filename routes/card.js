@@ -20,7 +20,7 @@ exports.create = function(req, res){
 	console.log( "card.insert" );
 
 	var fields = [ 'id', 'document_id', 'top', 'left_', 'title', 'description' ];
-	var values = [req.body.document_id, req.body.top, req.body.left, req.body.title, req.body.description];
+	var values = [req.body.document_id, Math.round( req.body.top ), Math.round( req.body.left ), req.body.title, req.body.description];
 	res.local( 'db' ).insert( 'card', fields, values, function( card_id ) {
 		res.json( { "id": card_id } );
 		console.log( "card.create. id: " + card_id );
@@ -32,7 +32,7 @@ exports.create = function(req, res){
 exports.update = function(req, res){
 	console.log( "card.update. req.params.card: " + req.params.card );
 
-	res.local( 'db' ).execute( "UPDATE card_tbl SET top=$1, left_=$2, title=$3, description=$4 WHERE id = $5", [req.body.top, req.body.left, req.body.title, req.body.description, req.params.card], function() {
+	res.local( 'db' ).execute( "UPDATE card_tbl SET top=$1, left_=$2, title=$3, description=$4 WHERE id = $5", [Math.round( req.body.top ), Math.round( req.body.left ), req.body.title, req.body.description, req.params.card], function() {
 		res.send(200);
 	});
 

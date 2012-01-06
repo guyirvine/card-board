@@ -80,6 +80,54 @@ var suite = vows.describe('API Localhost HTTP Tests')
 		'body is valid JSON' : common.assertValidJSON(),
 		'should return new id' : common.assertReturnedIdValid(),
 	},
+})
+
+
+.addBatch({
+	'note#create. make sure floats are accepted for top and left.': {
+		topic: function(){
+			var obj = { "document_id": '-1',
+						"top": '-2.1234',
+						"left": '-2.1234',
+						"description": 'new description',
+						};
+			common.post('note', obj, this.callback)
+		},
+		'should be 200': common.assertStatus(200),
+		'should have JSON header' : common.assertJSONHead(),
+		'body is valid JSON' : common.assertValidJSON(),
+		'should return new id' : common.assertReturnedIdValid(),
+	},
+})
+
+
+.addBatch({
+	'note#update': {
+		topic: function(){
+			var obj = { "document_id": '-1',
+						"top": '-2',
+						"left": '-2',
+						"description": 'updated description',
+						};
+			common.put('note/-1', obj, this.callback)
+		},
+		'should be 200': common.assertStatus(200),
+	},
+})
+
+
+.addBatch({
+	'note#update. make sure floats are accepted for top and left.': {
+		topic: function(){
+			var obj = { "document_id": '-1',
+						"top": '-2.1234',
+						"left": '-2.1234',
+						"description": 'updated description',
+						};
+			common.put('note/-1', obj, this.callback)
+		},
+		'should be 200': common.assertStatus(200),
+	},
 });
 
 

@@ -20,7 +20,7 @@ exports.create = function(req, res){
 	console.log( "split.insert" );
 
 	var fields = [ 'id', 'document_id', 'top', 'upper', 'lower' ];
-	var values = [req.body.document_id, req.body.top, req.body.upper, req.body.lower];
+	var values = [req.body.document_id, Math.round(req.body.top), req.body.upper, req.body.lower];
 	res.local( 'db' ).insert( 'split', fields, values, function( split_id ) {
 		res.json( { "id": split_id } );
 		console.log( "split.create. id: " + split_id );
@@ -31,7 +31,7 @@ exports.create = function(req, res){
 exports.update = function(req, res){
 	console.log( "split.update. req.params.split: " + req.params.split );
 
-	res.local( 'db' ).execute( "UPDATE split_tbl SET top=$1, title=$2, description=$3 WHERE id = $4", [req.body.top, req.body.upper, req.body.lower, req.params.split], function() {
+	res.local( 'db' ).execute( "UPDATE split_tbl SET top=$1, upper=$2, lower=$3 WHERE id = $4", [Math.round(req.body.top), req.body.upper, req.body.lower, req.params.split], function() {
 		res.send(200);
 		console.log( "split.update. req.params.split: " + req.params.split );
 	});

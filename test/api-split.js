@@ -77,6 +77,68 @@ var suite = vows.describe('API Localhost HTTP Tests')
 
 
 .addBatch({
+	'split#create. make sure floats are accepted for top.': {
+		topic: function(){
+			var obj = { "document_id": '-1',
+						"top": '-2.1234',
+						"upper": '-3',
+						"lower": '-4',
+						};
+			common.post('split', obj, this.callback)
+		},
+		'should be 200': common.assertStatus(200),
+		'should have JSON header' : common.assertJSONHead(),
+		'body is valid JSON' : common.assertValidJSON(),
+		'should return new id' : common.assertReturnedIdValid(),
+	},
+})
+
+
+.addBatch({
+	'split#update': {
+		topic: function(){
+			var obj = { "document_id": '-1',
+						"top": '-2',
+						"upper": '-3',
+						"lower": '-4',
+						};
+			common.put('split/-1', obj, this.callback)
+		},
+		'should be 200': common.assertStatus(200),
+	},
+})
+
+
+.addBatch({
+	'split#update': {
+		topic: function(){
+			var obj = { "document_id": '-1',
+						"top": '-2',
+						"upper": '-3',
+						"lower": '-4',
+						};
+			common.put('split/-1', obj, this.callback)
+		},
+		'should be 200': common.assertStatus(200),
+	},
+})
+
+.addBatch({
+	'split#update. make sure floats are accepted for top.': {
+		topic: function(){
+			var obj = { "document_id": '-1',
+						"top": '-2.1234',
+						"upper": '-3',
+						"lower": '-4',
+						};
+			common.put('split/-1', obj, this.callback)
+		},
+		'should be 200': common.assertStatus(200),
+	},
+})
+
+
+.addBatch({
   'split#delete': {
     topic: function(){
       common.del('split/-2', {}, this.callback)

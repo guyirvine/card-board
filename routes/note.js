@@ -20,7 +20,7 @@ exports.create = function(req, res){
 	console.log( "note.insert" );
 
 	var fields = [ 'id', 'document_id', 'top', 'left_', 'description' ];
-	var values = [req.body.document_id, req.body.top, req.body.left, req.body.description];
+	var values = [req.body.document_id, Math.round( req.body.top ), Math.round( req.body.left ), req.body.description];
 	res.local( 'db' ).insert( 'note', fields, values, function( note_id ) {
 		res.json( { "id": note_id } );
 		console.log( "note.create. id: " + note_id );
@@ -32,7 +32,7 @@ exports.create = function(req, res){
 exports.update = function(req, res){
 	console.log( "note.update. req.params.note: " + req.params.note );
 
-	res.local( 'db' ).execute( "UPDATE note_tbl SET top=$1, left_=$2, description=$3 WHERE id = $4", [req.body.top, req.body.left, req.body.description, req.params.note], function() {
+	res.local( 'db' ).execute( "UPDATE note_tbl SET top=$1, left_=$2, description=$3 WHERE id = $4", [Math.round( req.body.top ), Math.round( req.body.left ), req.body.description, req.params.note], function() {
 		res.send(200);
 		console.log( "note.update. req.params.note: " + req.params.note );
 	});
