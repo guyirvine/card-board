@@ -40,19 +40,19 @@ div#trash-can.trashcan-hover {
 	position: absolute;
 	right: 13px;
 	top: 11px;
-	width: 115px;
+	width: 120px;
 }
 #create-note {
 	position: absolute;
 	right: 13px;
 	top: 55px;
-	width: 115px;
+	width: 120px;
 }
 #create-split {
 	position: absolute;
 	right: 13px;
 	top: 99px;
-	width: 115px;
+	width: 120px;
 }
 
 .shadow {
