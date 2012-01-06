@@ -1,8 +1,12 @@
+@media print {
+button {	visibility: hidden; }
+#trash-can {	visibility: hidden; }
+}
+
 body {
-	font-family: MV Boli; Comic Sans MS;
+	font-family: "Reenie Beanie",MV Boli, Comic Sans MS;
 	margin: 10px;
 	background-color: #F0F0F0;
-	border: 1px solid black;
 }
 
 #msg-list {
@@ -59,9 +63,9 @@ div#trash-can.trashcan-hover {
 
 
 #card-layout div.highlight {
-  -moz-box-shadow:    3px 3px 3px 1px #666;
-  -webkit-box-shadow: 3px 3px 3px 1px #666;
-  box-shadow:         3px 3px 3px 1px #666;
+	-moz-box-shadow:    3px 3px 3px 1px #666;
+	-webkit-box-shadow: 3px 3px 3px 1px #666;
+	box-shadow:         3px 3px 3px 1px #666;
 }
 
 #card-layout div.card {
@@ -112,6 +116,9 @@ div#trash-can.trashcan-hover {
 	text-align: center;
 	position: absolute;
 	cursor: default;
+	-webkit-transform: rotate(-3deg);
+	-o-transform: rotate(-3deg);
+	-moz-transform: rotate(-3deg);
 }
 
 #split-layout div {

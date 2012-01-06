@@ -1,5 +1,5 @@
+<!DOCTYPE html>
 <html>
-
 <head>
 
 
@@ -7,12 +7,13 @@
 <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
 <script type="text/javascript" src="card-board.js"></script>
+<script type="text/javascript" src="public/javascripts/json2.js"></script>
+<link  href="http://fonts.googleapis.com/css? family=Reenie+Beanie:regular"  rel="stylesheet"  type="text/css">
 <link type="text/css" href="card-board.css" rel="stylesheet" />	
-
 </head>
 
 
-<body class='shadow'>
+<body>
 	<div id='card-layout'>
 		<button id="create-card">new Card</button>
 		<button id="create-note">new Note</button>
@@ -62,7 +63,6 @@
 
 <script>
 	var document_id = getUrlVars()['document_id'];
-
 	$(function() {
 		$.getJSON('document/' + document_id, function(data) {
 			$.each(data, function(key, val) {
