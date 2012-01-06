@@ -103,7 +103,7 @@ function sendMsgToServer() {
 						},
 						408: function() {
 							alert( "Timeout: 408" );
-						},
+						}
 					}
 
 				});
