@@ -7,7 +7,7 @@
 <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
 <script type="text/javascript" src="card-board.js"></script>
-<script type="text/javascript" src="public/javascripts/json2.js"></script>
+<script type="text/javascript" src="javascripts/json2.js"></script>
 <link  href="http://fonts.googleapis.com/css? family=Reenie+Beanie:regular"  rel="stylesheet"  type="text/css">
 <link type="text/css" href="card-board.css" rel="stylesheet" />	
 </head>
@@ -15,12 +15,14 @@
 
 <body>
 	<div id='card-layout'>
+		<div id='card-layout-border' class='shadow'>&nbsp;</div>
+
 		<button id="create-card">new Card</button>
 		<button id="create-note">new Note</button>
 		<button id="create-split">new Split</button>
 		
 		<div id="trash-can">&nbsp;</div>
-		<div id="document-title">Repro</div>
+		<div id="document-title">[Empty]</div>
 	</div>
 
 <div id="dialog-form-split" title="Create a new split">
