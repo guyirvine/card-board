@@ -67,9 +67,7 @@
 	var document_id = getUrlVars()['document_id'];
 	$(function() {
 		$.getJSON('document/' + document_id, function(data) {
-			$.each(data, function(key, val) {
-				$( "#document-title" ).text( val.title );
-			});
+			$( "#document-title" ).text( data.title );
 		});
 
 		$.getJSON('card?document_id=' + document_id, function(data) {
